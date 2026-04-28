@@ -1,0 +1,2 @@
+# Placeholder for adaptive icon
+# Add your adaptive-icon.png file here (for Android)

@@ -1,0 +1,2 @@
+# Placeholder for favicon
+# Add your favicon.png file here (for web)
