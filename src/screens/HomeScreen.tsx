@@ -1,42 +1,43 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
+import FileViewerLayout from "@/components/FileViewerLayout";
+import DropZone from "@/components/DropZone";
+import PDFViewer from "@/components/PDFViewer";
+import ImageViewer from "@/components/ImageViewer";
+import { getFileType } from "@/utils/fileValidation";
 
 export default function HomeScreen() {
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
+  const [fileType, setFileType] = useState<'pdf' | 'image' | null>(null);
+
+  const handleFileDrop = (file: File) => {
+    const type = getFileType(file);
+    if (type) {
+      setCurrentFile(file);
+      setFileType(type);
+    }
+  };
+
+  const handleClearFile = () => {
+    setCurrentFile(null);
+    setFileType(null);
+  };
+
+  // Render left panel content
+  const leftPanelContent = currentFile ? (
+    fileType === 'pdf' ? (
+      <PDFViewer file={currentFile} onClear={handleClearFile} />
+    ) : (
+      <ImageViewer file={currentFile} onClear={handleClearFile} />
+    )
+  ) : (
+    <DropZone onFileDrop={handleFileDrop} hasFile={!!currentFile} />
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Data Extractor for Tally</Text>
-      <Text style={styles.subtitle}>Welcome to your Expo app!</Text>
-      <Text style={styles.description}>
-        This is a managed Expo workflow with TypeScript. You can now build your
-        data extraction features here.
-      </Text>
-    </View>
+    <FileViewerLayout
+      left={leftPanelContent}
+      right={<View />}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 18,
-    color: "#666",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  description: {
-    fontSize: 14,
-    color: "#999",
-    textAlign: "center",
-    lineHeight: 20,
-  },
-});
