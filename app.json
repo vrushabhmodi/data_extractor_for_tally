@@ -24,7 +24,6 @@
       "package": "com.dataextractor.tally"
     },
     "web": {
-      "favicon": "./src/assets/favicon.png",
       "bundler": "metro"
     }
   }
